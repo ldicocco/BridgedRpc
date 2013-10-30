@@ -3,8 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F3E19F1-5354-4225-B3ED-20A71C756864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Server", "src\BridgedRpc.Server\BridgedRpc.Server.csproj", "{32923E44-2C30-444F-9E09-89740CBFB196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Infrastructure", "src\BridgedRpc.Infrastructure\BridgedRpc.Infrastructure.csproj", "{F0E69C0B-884C-4435-9131-D8C5C5BE03AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Bridge", "src\BridgedRpc.Bridge\BridgedRpc.Bridge.csproj", "{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Client", "src\BridgedRpc.Client\BridgedRpc.Client.csproj", "{3D748B09-895F-4DB7-BD40-8A84667494DE}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32923E44-2C30-444F-9E09-89740CBFB196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32923E44-2C30-444F-9E09-89740CBFB196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32923E44-2C30-444F-9E09-89740CBFB196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32923E44-2C30-444F-9E09-89740CBFB196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32923E44-2C30-444F-9E09-89740CBFB196} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
+		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
+		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
+		{3D748B09-895F-4DB7-BD40-8A84667494DE} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
 	EndGlobalSection
 EndGlobal
