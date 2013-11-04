@@ -18,6 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{5BA84027-5A80-44ED-92C8-E2294BEA3BFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2BCAEC63-37A4-46CA-8B4E-2F1D55A58A92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Bridge.Tests", "tests\BridgedRpc.Bridge.Tests\BridgedRpc.Bridge.Tests.csproj", "{4F9A99B1-2956-4DFE-B6CF-7BB970060081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +46,10 @@ Global
 		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D748B09-895F-4DB7-BD40-8A84667494DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F9A99B1-2956-4DFE-B6CF-7BB970060081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F9A99B1-2956-4DFE-B6CF-7BB970060081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F9A99B1-2956-4DFE-B6CF-7BB970060081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F9A99B1-2956-4DFE-B6CF-7BB970060081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,5 +59,6 @@ Global
 		{F0E69C0B-884C-4435-9131-D8C5C5BE03AA} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
 		{0DB53D87-B4ED-4966-B8E5-2999E8CCC89C} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
 		{3D748B09-895F-4DB7-BD40-8A84667494DE} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
+		{4F9A99B1-2956-4DFE-B6CF-7BB970060081} = {2BCAEC63-37A4-46CA-8B4E-2F1D55A58A92}
 	EndGlobalSection
 EndGlobal
