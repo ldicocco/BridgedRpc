@@ -65,7 +65,7 @@ namespace BridgedRpc.Bridge
 			}
 			var pr = new PendingRequest(serverName, methodName, parameters);
 			pr = _pendingRequests.AddOrUpdate(pr.Id, pr, (key, oldValue) => oldValue);
-			await _context.Connection.Broadcast(String.Join("|", "G", methodName, HelperPath, pr.Id.ToString()));
+			await _context.Connection.Send(serverEntry.ConnectionId, String.Join("|", "G", methodName, HelperPath, pr.Id.ToString()));
 			return await pr.Tcs.Task;
 		}
 
