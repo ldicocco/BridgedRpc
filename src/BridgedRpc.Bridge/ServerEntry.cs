@@ -10,13 +10,11 @@ namespace BridgedRpc.Bridge
 	{
 		public string Name { get; set; }
 		public string ConnectionId { get; set; }
-		public ServerProxy ServerProxy { get; set; }
 
 		public ServerEntry(string name, string connectionId)
 		{
 			Name = name;
 			ConnectionId = connectionId;
-			ServerProxy = new ServerProxy(name, connectionId);
 		}
 	}
 }

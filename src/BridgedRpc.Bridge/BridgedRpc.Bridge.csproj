@@ -54,18 +54,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppBuilderExtensions.cs" />
+    <Compile Include="BridgedRpcConnection.cs" />
     <Compile Include="BridgerService.cs" />
     <Compile Include="PendingRequest.cs" />
     <Compile Include="PendingRequestStatus.cs" />
-    <Compile Include="ServerProxy.cs" />
     <Compile Include="ServerRegistrationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerEntry.cs" />
-    <Compile Include="ServerRequest.cs" />
     <Compile Include="ServerRequestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BridgedRpc.Infrastructure\BridgedRpc.Infrastructure.csproj">
+      <Project>{f0e69c0b-884c-4435-9131-d8c5c5be03aa}</Project>
+      <Name>BridgedRpc.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

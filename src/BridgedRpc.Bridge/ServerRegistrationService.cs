@@ -39,6 +39,13 @@ namespace BridgedRpc.Bridge
 			return _registeredServers.ContainsKey(name);
 		}
 
+		internal ServerEntry GetServerEntry(string name)
+		{
+			ServerEntry se = null;
+			_registeredServers.TryGetValue(name, out se);
+			return se;
+		}
+
 		public string GetConnectionId(string name)
 		{
 			ServerEntry se = null;
@@ -73,17 +80,5 @@ namespace BridgedRpc.Bridge
 				.ForEach(name => _registeredServers.TryRemove(name, out se));
 		}
 
-		public ServerProxy GetServerProxy(string name)
-		{
-			ServerEntry se = null;
-			if (_registeredServers.TryGetValue(name, out se))
-			{
-				return se.ServerProxy;
-			}
-			else
-			{
-				return null;
-			}
-		}
 	}
 }

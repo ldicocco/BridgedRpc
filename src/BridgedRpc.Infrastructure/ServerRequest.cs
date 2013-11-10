@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BridgedRpc.Bridge
+namespace BridgedRpc.Infrastructure
 {
 	public class ServerRequest
 	{
