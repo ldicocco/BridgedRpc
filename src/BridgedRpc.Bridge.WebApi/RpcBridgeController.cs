@@ -8,7 +8,7 @@ using System.Web.Http;
 using BridgedRpc.Bridge;
 using BridgedRpc.Infrastructure;
 
-namespace BasicWebBridge.Controllers
+namespace BridgedRpc.Bridge.WebApi
 {
 	public class RpcBridgeController : ApiController
 	{

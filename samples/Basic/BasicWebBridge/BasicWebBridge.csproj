@@ -146,7 +146,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BridgeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\RpcBridgeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +202,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\BridgedRpc.Bridge.WebApi\BridgedRpc.Bridge.WebApi.csproj">
+      <Project>{28a38797-a495-478c-b8e3-218e57b0a227}</Project>
+      <Name>BridgedRpc.Bridge.WebApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\src\BridgedRpc.Bridge\BridgedRpc.Bridge.csproj">
       <Project>{0db53d87-b4ed-4966-b8e5-2999e8ccc89c}</Project>
       <Name>BridgedRpc.Bridge</Name>
