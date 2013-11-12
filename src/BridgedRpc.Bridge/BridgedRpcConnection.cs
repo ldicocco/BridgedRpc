@@ -19,6 +19,7 @@ namespace BridgedRpc.Bridge
 
 		protected override Task OnDisconnected(IRequest request, string connectionId)
 		{
+			BridgerService.Instance.RemoveConnection(connectionId);
 			return base.OnDisconnected(request, connectionId);
 		}
 
@@ -32,6 +33,8 @@ namespace BridgedRpc.Bridge
 					return HandleRegisterServer(request, connectionId, msg[1]);
 				case "U":
 					return HandleUnregisterServer(request, connectionId, msg[1]);
+				case "?":
+					return HandleQueryServer(request, connectionId, msg[1]);
 			}
 			return Connection.Broadcast(data);
 		}
@@ -44,6 +47,11 @@ namespace BridgedRpc.Bridge
 		private Task HandleUnregisterServer(IRequest request, string connectionId, string name)
 		{
 			return BridgerService.Instance.UnregisterServer(name);
+		}
+
+		private Task HandleQueryServer(IRequest request, string connectionId, string name)
+		{
+			return BridgerService.Instance.QueryServer(name, connectionId);
 		}
 	}
 }

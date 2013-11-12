@@ -14,13 +14,17 @@ namespace BasicServer
 		static void Main(string[] args)
 		{
 			var rpcServer = new RpcServer("server01", "http://localhost:58355");
-			rpcServer.Connection.Received += (data) => Console.WriteLine(data);
+			rpcServer.Connection.Received += (data) => Console.WriteLine("ECHO: " + data);
 			rpcServer.OnRpc("add", (long a, long b) => a + b);
+			rpcServer.OnRpc("getFile", (string name) => {
+				return System.IO.File.ReadAllBytes(System.IO.Path.GetFileName(name));
+			});
 			rpcServer.Start().Wait();
 			rpcServer.Register().Wait();
-//			rpcServer.Connection.Send(String.Join("|", "U", "server01")).Wait();
 
+			Console.WriteLine("Ready");
 			Console.ReadLine();
+			rpcServer.Unregister().Wait();
 		}
 	}
 }

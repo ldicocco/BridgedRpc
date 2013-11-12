@@ -47,13 +47,37 @@ namespace BridgedRpc.Bridge
 		public Task RegisterServer(string name, string connectionId)
 		{
 			_serverRegistration.Register(name, connectionId);
-			return _context.Connection.Broadcast(String.Join("|", "R", name));
+			return _context.Connection.Broadcast(String.Join("|", "R", name), connectionId);
 		}
 
 		public Task UnregisterServer(string name)
 		{
-			_serverRegistration.Unregister(name);
-			return _context.Connection.Broadcast(String.Join("|", "U", name));
+			string connectionId = _serverRegistration.Unregister(name);
+			if (!String.IsNullOrEmpty(connectionId))
+			{
+				return _context.Connection.Broadcast(String.Join("|", "U", name), connectionId);
+			}
+			else
+			{
+				return Task.FromResult(0);
+			}
+		}
+
+		public void RemoveConnection(string connectionId)
+		{
+			_serverRegistration.RemoveConnection(connectionId, (name) => _context.Connection.Broadcast(String.Join("|", "U", name), connectionId));
+		}
+
+		public Task QueryServer(string name, string connectionId)
+		{
+			if (_serverRegistration.IsRegistered(name))
+			{
+				return _context.Connection.Broadcast(String.Join("|", "R", name), connectionId);
+			}
+			else
+			{
+				return Task.FromResult(0);
+			}
 		}
 
 		public async Task<ServerResponse> SendRequest(string serverName, string methodName, IList<object> parameters)

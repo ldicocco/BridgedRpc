@@ -10,7 +10,7 @@ namespace BridgedRpc.Bridge
 	public class ServerRegistrationService
 	{
 		private static object _syncRoot = new Object();
-//		private static readonly Lazy<ServerRegistrationService> _instance = new Lazy<ServerRegistrationService>(() => new ServerRegistrationService(), true);
+		//		private static readonly Lazy<ServerRegistrationService> _instance = new Lazy<ServerRegistrationService>(() => new ServerRegistrationService(), true);
 		private readonly ConcurrentDictionary<string, ServerEntry> _registeredServers;
 
 		public ServerRegistrationService()
@@ -18,13 +18,13 @@ namespace BridgedRpc.Bridge
 			_registeredServers = new ConcurrentDictionary<string, ServerEntry>();
 		}
 
-/*		public static ServerRegistrationService Instance
-		{
-			get
-			{
-				return _instance.Value;
-			}
-		}*/
+		/*		public static ServerRegistrationService Instance
+				{
+					get
+					{
+						return _instance.Value;
+					}
+				}*/
 
 		public int Count
 		{
@@ -66,18 +66,25 @@ namespace BridgedRpc.Bridge
 			return newSE == se;
 		}
 
-		public bool Unregister(string name)
+		public string Unregister(string name)
 		{
 			ServerEntry se = null;
 			_registeredServers.TryRemove(name, out se);
-			return se != null;
+			if (se != null)
+			{
+				return se.ConnectionId;
+			}
+			else
+			{
+				return null;
+			}
 		}
 
-		public void RemoveConnection(string connectionId)
+		public void RemoveConnection(string connectionId, Action<string> postAction)
 		{
 			ServerEntry se = null;
 			_registeredServers.Values.Where(i => i.ConnectionId == connectionId).Select(i => i.Name).ToList()
-				.ForEach(name => _registeredServers.TryRemove(name, out se));
+				.ForEach(name => { _registeredServers.TryRemove(name, out se); if (postAction != null) postAction(name); });
 		}
 
 	}

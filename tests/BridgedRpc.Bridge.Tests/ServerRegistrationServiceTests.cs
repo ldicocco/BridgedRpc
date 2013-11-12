@@ -75,7 +75,7 @@ namespace BridgedRpc.Bridge.Tests
 				registrationService.Register(name, connectionId);
 			}
 
-			registrationService.RemoveConnection(sameConnectionId);
+			registrationService.RemoveConnection(sameConnectionId, null);
 
 			Assert.Equal(count - sameConnectionCount, registrationService.Count);
 		}

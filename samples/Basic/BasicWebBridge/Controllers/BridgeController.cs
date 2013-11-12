@@ -16,35 +16,23 @@ namespace BasicWebBridge.Controllers
 	{
 		public async Task<ServerResponse> SendRequest([FromBody]ServerRequest request)
 		{
-			var uri = Request.RequestUri;
-			return await BridgerService.Instance.SendRequest(request.Server, request.Method, request.Parameters);
+			var res = await BridgerService.Instance.SendRequest(request.Server, request.Method, request.Parameters);
+			return res;
 		}
 
-		// GET api/<controller>
-		public IEnumerable<string> Get()
+		public async Task<HttpResponseMessage> Download(HttpRequestMessage reqMsg)
 		{
-			return new string[] { "value1", "value2" };
+			var req = reqMsg.Content.ReadAsFormDataAsync().Result;
+			var r = req["request"];
+			var request = Newtonsoft.Json.JsonConvert.DeserializeObject<ServerRequest>(r);
+			var res = await BridgerService.Instance.SendRequest(request.Server, request.Method, request.Parameters);
+			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+			response.Content = new ByteArrayContent(System.Convert.FromBase64String((string)res.Result));
+			response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			response.Content.Headers.ContentDisposition.FileName = request.Parameters[0] as string;
+
+			return response;
 		}
 
-		// GET api/<controller>/5
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// POST api/<controller>
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/<controller>/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/<controller>/5
-		public void Delete(int id)
-		{
-		}
 	}
 }
