@@ -62,7 +62,6 @@
     <Compile Include="ServerRegistrationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerEntry.cs" />
-    <Compile Include="ServerRequestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -72,7 +72,7 @@ namespace BridgedRpc.Bridge
 		{
 			if (_serverRegistration.IsRegistered(name))
 			{
-				return _context.Connection.Broadcast(String.Join("|", "R", name), connectionId);
+				return _context.Connection.Send(connectionId, (String.Join("|", "R", name)));
 			}
 			else
 			{

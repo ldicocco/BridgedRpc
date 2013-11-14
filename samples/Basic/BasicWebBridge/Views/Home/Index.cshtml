@@ -4,12 +4,13 @@
 
 <input id="addP0" type="text" value="40" />
 <input id="addP1" type="text" value="2" />
-<input id="sendRequest" class="btn" type="button" value="Add" />
+<input id="sendRequest" class="btn" type="button" value="Add" disabled />
 <span id="response" />
 
-<p><input id="fileName" type="text" value="Newtonsoft.Json.xml" /><input id="getFile" type="button" value="Get File" /></p>
-
+<p><input id="fileName" type="text" value="Newtonsoft.Json.xml" /><input id="getFile" type="button" value="Get File" disabled /></p>
+<p><input id="queryRegistered" type="button" value="Query Registered"/></p>
 @section scripts{
+	<script src="~/Scripts/jquery.signalR-2.0.0.js"></script>
 	<script src="~/Scripts/jquery.fileDownload.js"></script>
 	<script src="~/Scripts/App/App.js"></script>
 }

@@ -10,21 +10,12 @@ namespace BridgedRpc.Bridge
 	public class ServerRegistrationService
 	{
 		private static object _syncRoot = new Object();
-		//		private static readonly Lazy<ServerRegistrationService> _instance = new Lazy<ServerRegistrationService>(() => new ServerRegistrationService(), true);
 		private readonly ConcurrentDictionary<string, ServerEntry> _registeredServers;
 
 		public ServerRegistrationService()
 		{
 			_registeredServers = new ConcurrentDictionary<string, ServerEntry>();
 		}
-
-		/*		public static ServerRegistrationService Instance
-				{
-					get
-					{
-						return _instance.Value;
-					}
-				}*/
 
 		public int Count
 		{
