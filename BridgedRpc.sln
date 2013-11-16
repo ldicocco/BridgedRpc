@@ -34,8 +34,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgedRpc.Bridge.WebApi", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{7D988CA7-7723-49FE-9138-48CA012885B1}"
 	ProjectSection(SolutionItems) = preProject
-		jquery.bridgedrpc.js = jquery.bridgedrpc.js
+		src\Scripts\jquery.bridgedrpc.js = src\Scripts\jquery.bridgedrpc.js
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RemoteFolders", "RemoteFolders", "{365AF32D-267C-447A-933F-63680B6F720E}"
+	ProjectSection(SolutionItems) = preProject
+		samples\Basic\BasicServer\Roots.cs = samples\Basic\BasicServer\Roots.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RfWebBridge", "samples\RemoteFolders\RfWebBridge\RfWebBridge.csproj", "{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RfServer", "samples\RemoteFolders\RfServer\RfServer.csproj", "{D73298BA-20F3-4B9E-8411-1A23F43D28E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +84,14 @@ Global
 		{28A38797-A495-478C-B8E3-218E57B0A227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28A38797-A495-478C-B8E3-218E57B0A227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28A38797-A495-478C-B8E3-218E57B0A227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D73298BA-20F3-4B9E-8411-1A23F43D28E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D73298BA-20F3-4B9E-8411-1A23F43D28E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D73298BA-20F3-4B9E-8411-1A23F43D28E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D73298BA-20F3-4B9E-8411-1A23F43D28E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,8 +104,11 @@ Global
 		{28A38797-A495-478C-B8E3-218E57B0A227} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
 		{7D988CA7-7723-49FE-9138-48CA012885B1} = {9F3E19F1-5354-4225-B3ED-20A71C756864}
 		{55298CFF-9CC9-4BC2-9B0C-1816D7C96056} = {5BA84027-5A80-44ED-92C8-E2294BEA3BFD}
+		{365AF32D-267C-447A-933F-63680B6F720E} = {5BA84027-5A80-44ED-92C8-E2294BEA3BFD}
 		{4F9A99B1-2956-4DFE-B6CF-7BB970060081} = {2BCAEC63-37A4-46CA-8B4E-2F1D55A58A92}
 		{DD4412AD-A885-4DAE-88D8-3818236E2E34} = {55298CFF-9CC9-4BC2-9B0C-1816D7C96056}
 		{A8AC3C4C-A5BC-4F16-8326-E65C5D687955} = {55298CFF-9CC9-4BC2-9B0C-1816D7C96056}
+		{C593CB4D-006F-4F33-8A1F-8E369D9A56BE} = {365AF32D-267C-447A-933F-63680B6F720E}
+		{D73298BA-20F3-4B9E-8411-1A23F43D28E2} = {365AF32D-267C-447A-933F-63680B6F720E}
 	EndGlobalSection
 EndGlobal

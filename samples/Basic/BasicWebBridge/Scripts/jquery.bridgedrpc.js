@@ -1,9 +1,10 @@
-(function ($, window) {
+(function ($) {
 	"use strict";
 
 	var ServerProxy = function (name, connection) {
 		var _self = this;
 		this.name = name;
+		this.isConnected = false;
 		if (connection && connection.received) {
 			this.connection = connection;
 			this.connection.received(function (msg) {
@@ -11,13 +12,19 @@
 				if (fields.length > 1) {
 					switch (fields[0]) {
 						case 'R':
-							if (fields[1] === _self.name && _self.onRegistered) {
-								_self.onRegistered();
+							if (fields[1] === _self.name) {
+								_self.isConnected = true;
+								if (_self.onConnected) {
+									_self.onConnected();
+								}
 							}
 							break;
 						case 'U':
-							if (fields[1] === _self.name && _self.onUnregistered) {
-								_self.onUnregistered();
+							if (fields[1] === _self.name) {
+								_self.isConnected = false;
+								if (_self.onDisconnected) {
+									_self.onDisconnected();
+								}
 							}
 							break;
 					}
@@ -47,13 +54,13 @@
 			data: 'request=' + JSON.stringify({ server: this.name, method: args[0], parameters: args.slice(1), isFile: true })
 		});
 	};
-	ServerProxy.prototype.onRegistered = function (onRegistered) {
-		this.onRegistered = onRegistered;
+	ServerProxy.prototype.onConnected = function (onConnected) {
+		this.onConnected = onConnected;
 	};
-	ServerProxy.prototype.onUnregistered = function (onUnregistered) {
-		this.onUnregistered = onUnregistered;
+	ServerProxy.prototype.onDisconnected = function (onDisconnected) {
+		this.onDisconnected = onDisconnected;
 	};
-	ServerProxy.prototype.queryRegistered = function () {
+	ServerProxy.prototype.queryConnected = function () {
 		if (this.connection) {
 			this.connection.send('?|' + this.name);
 		}
@@ -61,7 +68,7 @@
 	$.rpcServer = function (name, connection) {
 		return new ServerProxy(name, connection);
 	};
-}(window.jQuery, window));
+}(window.jQuery));
 
 
 

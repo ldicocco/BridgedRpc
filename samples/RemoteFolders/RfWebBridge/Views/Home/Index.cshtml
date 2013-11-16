@@ -1,0 +1,46 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+
+
+
+<div ng-app="App">
+	<div ng-controller="MainCtrl">
+
+		<div style="display:table-row; width:500px;">
+			<div>
+				<div style="margin:10px 5px 30px 5px; padding:10px; background-color:#EEEEEE; border-radius:5px; font:12px Tahoma;">
+					<span><b>First Tree's Selected Node</b> : <br>{{tree01.currentNode.Path}}</span>
+				</div>
+			</div>
+		</div>
+
+		<div style="display:table-row; width:500px;">
+			<div>
+				<input class="btn" type="button" value="Get Root" ng-disabled="!server01.isConnected" data-ng-click="getRoot()" />
+				<!-- FIRST TREE -->
+				<div data-angular-treeview="true"
+					 data-tree-id="tree01"
+					 data-tree-model="roleList1"
+					 data-node-id="Path"
+					 data-node-label="Name"
+					 data-node-children="children"
+					 data-expand-callback="onExpand(node)">
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts
+{
+	<script src="~/Scripts/jquery.signalR-2.0.0.js"></script>
+	<script src="~/Scripts/jquery.bridgedrpc.js"></script>
+	<script src="~/Scripts/angular.js"></script>
+	<script src="~/Scripts/angular-resource.js"></script>
+	<script src="~/Scripts/angular-bridgedrpc.js"></script>
+	<script src="~/Scripts/TreeView/bridgedrpc.treeview.js"></script>
+	<script src="~/Scripts/App/App.js"></script>
+}
