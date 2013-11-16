@@ -37,7 +37,7 @@ namespace BridgedRpc.Bridge.WebApi
 			{
 				response.Content = new ByteArrayContent(System.Convert.FromBase64String((string)res.Result));
 				response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-				response.Content.Headers.ContentDisposition.FileName = request.Parameters[0] as string;
+				response.Content.Headers.ContentDisposition.FileName = System.IO.Path.GetFileName(request.Parameters[0] as string);
 			}
 			else
 			{

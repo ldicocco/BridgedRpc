@@ -28,6 +28,16 @@ namespace RfServer
 				var dirs = di.EnumerateFileSystemInfos().Select(i => new { i.Name, Path = i.FullName.Replace(rootPath, ""), IsDirectory = i.Attributes.HasFlag(FileAttributes.Directory) }).ToArray();
 				return dirs.OrderByDescending(i => i.IsDirectory).ThenBy(i => i.Name);
 			});
+			rpcServer.OnRpc("getFile", (string path, string root) =>
+			{
+				if (!Roots.Instance.ContainsRoot(root) || path.Contains("../"))
+				{
+					return null;
+				}
+
+				var rootPath = Roots.Instance[root];
+				return File.ReadAllBytes(rootPath + path);
+			});
 			rpcServer.Start().Wait();
 			rpcServer.Register().Wait();
 

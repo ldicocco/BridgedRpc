@@ -37,9 +37,17 @@ angular.module('ldcBridgedRpc', [])
 					rlangisHubProxy.onRlangisDisconnected(func);
 				};
 				var getServerProxy = function (name) { return new ServerProxy(rlangisHubProxy, name); };
-				var start = function () { return connection.start(); };*/
+				var start = function () { return connection.start(); };
+		var _getRpcServer = function (name, connection) {
+			var serverProxy = $.rpcServer(name, connection);
+			var oldOnReceived = serverProxy.connection.received;
+			connection.received = function (msg) {
+				$rootScope.$apply(function () { oldOnReceived(msg); });
+			};
+			return serverProxy;*/
+		}
 		return {
-			/*			getServerProxy: getServerProxy,
+			/*getRpcServer: _getRpcServer
 						start: start,
 						onRlangisNameConnected: onRlangisNameConnected,
 						onRlangisNameDisconnected: onRlangisNameDisconnected*/

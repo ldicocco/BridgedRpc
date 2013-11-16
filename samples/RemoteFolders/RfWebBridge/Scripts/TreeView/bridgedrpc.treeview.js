@@ -46,8 +46,9 @@
 					//children
 					var nodeChildren = attrs.nodeChildren || 'children';
 
-					var expandCallbackGet = $parse(attrs.expandCallback);
-					var expandCallback = attrs.expandCallback;
+//					var expandCallbackGet = $parse(attrs.expandCallback);
+//					var expandCallback = attrs.expandCallback;
+//					var dblClickCallback = attrs.dblClickCallback;
 //					var expandCallback = function (locals) { return expandCallbackGet(scope, locals); };
 					//					alert(expandCallback);
 //					scope.$eval(attrs.expandCallback);
@@ -59,7 +60,7 @@
 								'<i class="collapsed" data-ng-show="node.IsDirectory && !node.expanded" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
 								'<i class="expanded" data-ng-show="node.IsDirectory && node.expanded" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
 								'<i class="normal" data-ng-hide="node.IsDirectory"></i> ' +
-								'<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectNodeLabel(node)">{{node.' + nodeLabel + '}}</span>' +
+								'<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectNodeLabel(node)" data-ng-dblclick="' + treeId + '.dblClickNode(node)" >{{node.' + nodeLabel + '}}</span>' +
 								'<div data-ng-hide="!node.expanded" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +
 							'</li>' +
 						'</ul>';
@@ -82,6 +83,15 @@
 								if (selectedNode.expanded) {
 				//					alert(selectedNode);
 									scope.$eval(attrs.expandCallback, {node: selectedNode});
+								}
+							};
+
+							//if dbl clicks,
+							scope[treeId].dblClickNode = scope[treeId].dblClickNode || function (selectedNode) {
+
+								if (!selectedNode.IsDirectory) {
+//									alert(selectedNode.Name);
+									scope.$eval(attrs.dblclickCallback, { node: selectedNode });
 								}
 							};
 
