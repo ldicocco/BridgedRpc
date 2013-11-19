@@ -14,7 +14,8 @@ namespace RfServer
 	{
 		static void Main(string[] args)
 		{
-			var rpcServer = new RpcServer("server01", "http://localhost:49826");
+			string baseUrl = "http://localhost:49826";
+			var rpcServer = new RpcServer("server01", baseUrl);
 			rpcServer.Connection.Received += (data) => Console.WriteLine("ECHO: " + data);
 			rpcServer.OnRpc("getFileSystemEntries", (string root, string path) =>
 			{
@@ -36,7 +37,7 @@ namespace RfServer
 				}
 
 				var rootPath = Roots.Instance[root];
-				return File.ReadAllBytes(rootPath + path);
+				return File.OpenRead(rootPath + path);
 			});
 			rpcServer.Start().Wait();
 			rpcServer.Register().Wait();

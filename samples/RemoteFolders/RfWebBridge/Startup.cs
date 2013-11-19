@@ -10,8 +10,8 @@ namespace RfWebBridge
     {
         public void Configuration(IAppBuilder app)
         {
-			app.MapBridgedRpc("/BridgedRpc", "/rpc/RpcBridge");
 			ConfigureAuth(app);
+			app.MapBridgedRpc("/BridgedRpc", "/rpc/RpcBridge");
         }
     }
 }

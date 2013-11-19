@@ -17,7 +17,7 @@ namespace BasicServer
 			rpcServer.Connection.Received += (data) => Console.WriteLine("ECHO: " + data);
 			rpcServer.OnRpc("add", (long a, long b) => a + b);
 			rpcServer.OnRpc("getFile", (string name) => {
-				return System.IO.File.ReadAllBytes(System.IO.Path.GetFileName(name));
+				return System.IO.File.OpenRead(System.IO.Path.GetFileName(name));
 			});
 			rpcServer.Start().Wait();
 			rpcServer.Register().Wait();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace BridgedRpc.Infrastructure
 {
@@ -13,6 +14,8 @@ namespace BridgedRpc.Infrastructure
 		public ServerResponseErrorCode ErrorCode { get; set; }
 		public string ErrorReason { get; set; }
 		public string ExceptionDescription { get; set; }
+//		public string EncodedFile { get; set; }
+		public Stream Stream { get; set; }
 
 		public ServerResponse()
 		{

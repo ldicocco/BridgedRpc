@@ -38,9 +38,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{7D98
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RemoteFolders", "RemoteFolders", "{365AF32D-267C-447A-933F-63680B6F720E}"
-	ProjectSection(SolutionItems) = preProject
-		samples\Basic\BasicServer\Roots.cs = samples\Basic\BasicServer\Roots.cs
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RfWebBridge", "samples\RemoteFolders\RfWebBridge\RfWebBridge.csproj", "{C593CB4D-006F-4F33-8A1F-8E369D9A56BE}"
 EndProject

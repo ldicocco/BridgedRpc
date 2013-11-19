@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.IO;
 using Microsoft.AspNet.SignalR.Client;
 
 using BridgedRpc.Infrastructure;
@@ -25,7 +26,7 @@ namespace BridgedRpc.Server
 			_baseUri = new Uri(baseUri);
 			_connectionPath = connectionPath;
 			var ub = new UriBuilder(_baseUri);
-			ub.Path = _connectionPath;
+			ub.Path += _connectionPath;
 			_connection = new Connection(ub.ToString());
 			_connection.Received += OnConnectionReceived;
 			_httpClient = new HttpClient();
@@ -56,14 +57,21 @@ namespace BridgedRpc.Server
 
 		protected async void OnConnectionReceived(string data)
 		{
-			var msg = data.Split('|');
-			if (msg.Length == 4 && msg[0] == "G")
+			try
 			{
-				await HandleRequest(msg[1], msg[2], msg[3]);
+				var msg = data.Split('|');
+				if (msg.Length == 4 && msg[0] == "G")
+				{
+					await HandleRequest(msg[1], msg[2], msg[3]);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.ToString());
 			}
 		}
 
-		private async Task<object> HandleRequest(string method, string path, string id)
+		private async Task HandleRequest(string method, string path, string id)
 		{
 			Console.WriteLine("HandleGetParameters {0} {1} {2}", method, path, id);
 			var ub = new UriBuilder(_baseUri);
@@ -76,18 +84,14 @@ namespace BridgedRpc.Server
 				var sc0 = new ObjectContent<ServerResponse>(sr0, new System.Net.Http.Formatting.JsonMediaTypeFormatter());
 				var res0 = await _httpClient.PutAsync(ub.ToString(), sc0);
 			}
-			var response = await _httpClient.GetAsync(ub.ToString());
-			var content = await response.Content.ReadAsStringAsync();
-			var parameters = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<object>>(content);
-			Console.WriteLine("PARAMETERS");
-			Console.WriteLine(content);
+			var parameters = await GetParameters(path, id);
 			var sr = new ServerResponse();
 			try
 			{
 				var result = _methodsTable[method](parameters);
 				sr.Result = result;
 				sr.Success = true;
-				Console.WriteLine("Result " + result);
+				Console.WriteLine("Result " + sr.Result);
 			}
 			catch (Exception ex)
 			{
@@ -96,10 +100,63 @@ namespace BridgedRpc.Server
 				Console.WriteLine("Exception " + ex.Message);
 			}
 
-			var res = await _httpClient.PutAsync<ServerResponse>(ub.ToString(), sr, new System.Net.Http.Formatting.JsonMediaTypeFormatter());
+			if (sr.Result is byte[])
+			{
+				await SetBlobResult(path, id, sr.Result as byte[]);
+			}
+			else if (sr.Result is FileStream)
+			{
+				await SetFileStreamResult(path, id, sr.Result as FileStream);
+			}
+			else
+			{
+				await SetResult(path, id, sr);
+			}
+		}
+
+		private async Task<IList<object>> GetParameters(string path, string id)
+		{
+			var ub = new UriBuilder(_baseUri);
+			ub.Path = path;
+			ub.Path += "/GetParameters/" + id;
+			Console.WriteLine(ub.ToString());
+			var response = await _httpClient.GetAsync(ub.ToString());
+			var content = await response.Content.ReadAsStringAsync();
+			var parameters = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<object>>(content);
+			Console.WriteLine("PARAMETERS");
+			Console.WriteLine(content);
+			return parameters;
+		}
+
+		private async Task SetResult(string path, string id, ServerResponse sr)
+		{
+			var ub = new UriBuilder(_baseUri);
+			ub.Path = path;
+			ub.Path += "/SetResult/" + id;
+			var res = await _httpClient.PostAsJsonAsync(ub.ToString(), sr);
 			Console.WriteLine(res);
 			Console.WriteLine(res.Content.ReadAsStringAsync().Result);
-			return Task.FromResult<object>(content);
+		}
+
+		private async Task SetBlobResult(string path, string id, byte[] blob)
+		{
+			var ub = new UriBuilder(_baseUri);
+			ub.Path = path;
+			ub.Path += "/SetBlobResult/" + id;
+			var res = await _httpClient.PostAsJsonAsync(ub.ToString(), blob);
+			Console.WriteLine("SetBlobResult");
+			Console.WriteLine(res);
+		}
+
+		private async Task SetFileStreamResult(string path, string id, FileStream stream)
+		{
+			Console.WriteLine("SetBlobResult - Length = {0}", stream.Length);
+			var ub = new UriBuilder(_baseUri);
+			ub.Path = path;
+			ub.Path += "/SetBlobResult/" + id;
+			var content = new StreamContent(stream);
+			var res = await _httpClient.PostAsync(ub.ToString(), content);
+			Console.WriteLine(res);
 		}
 
 		private static TResult JConvert<TResult>(object val)

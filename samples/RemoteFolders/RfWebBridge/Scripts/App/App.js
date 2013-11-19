@@ -7,7 +7,7 @@
 		var _self = this;
 		//		$scope.server01 = bridgedRpc.getServerProxy('server01');
 		$scope.isConnected = false;
-		var connection = $.connection('/BridgedRpc');
+		var connection = $.connection('/Bridge/BridgedRpc');
 		$scope.server01 = $.rpcServer('server01', connection);
 		//		$scope.server01 = bridgedRpc.getRpcServer('server01', connection);
 
