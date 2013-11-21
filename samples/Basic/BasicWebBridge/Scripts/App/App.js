@@ -7,7 +7,7 @@ $(function () {
 			.done(function (res) { $('#response').text(res.Result); });
 	});
 
-	$(document).on("click", "#getFile", function (e) {
+	$(document).on("click", "#getFile", function () {
 		serverProxy.requestFile('getFile', $('#fileName').val());
 	});
 

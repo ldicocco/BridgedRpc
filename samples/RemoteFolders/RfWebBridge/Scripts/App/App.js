@@ -7,7 +7,7 @@
 		var _self = this;
 		//		$scope.server01 = bridgedRpc.getServerProxy('server01');
 		$scope.isConnected = false;
-		var connection = $.connection('/Bridge/BridgedRpc');
+		var connection = $.connection('/BridgedRpc');
 		$scope.server01 = $.rpcServer('server01', connection);
 		//		$scope.server01 = bridgedRpc.getRpcServer('server01', connection);
 
@@ -69,7 +69,7 @@
 			$scope.server01.requestFile("getFile", node.Path, "Main");
 		};
 
-		$scope.server01.onConnected(function () { $scope.$apply(function () { $scope.isConnected = true; }) });
+		$scope.server01.onConnected(function () { $scope.$apply(function () { $scope.isConnected = true; }); });
 
 		connection.start().done(function () { $scope.server01.queryConnected(); });
 		//		rlangis.start().done(function () { $scope.server01.checkStatus(); });

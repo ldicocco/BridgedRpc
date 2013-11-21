@@ -15,7 +15,6 @@ namespace BridgedRpc.Bridge.WebApi
 {
 	public class RpcBridgeController : ApiController
 	{
-		//		[ActionName("SendRequest")]
 		public async Task<HttpResponseMessage> SendRequest(HttpRequestMessage reqMsg)
 		{
 			ServerRequest request = null;
