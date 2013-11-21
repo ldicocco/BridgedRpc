@@ -1,7 +1,7 @@
 BridgedRpc
 ==========
 
-A .NET library to make RPC requests beyond a firewall
+A .NET library to bridge RPC requests beyond a firewall
 
 What can it be used for?
 -----------
