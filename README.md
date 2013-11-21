@@ -31,6 +31,15 @@ In the Bridge, just reference the BridgedRpc.Bridge.WebApi dll, and configure th
         }
     }
 
+Using Web API with default configuration, the route has to be configured for RPC like that:
+
+	config.Routes.MapHttpRoute(
+	name: "DefaultApi",
+	routeTemplate: "rpc/{controller}/{action}/{id}",
+	defaults: new { id = RouteParameter.Optional }
+	);
+
+
 In the Server, create an RpcServer class, with the Server name, the Bridge Url, and the methods implemented:
 
 	var rpcServer = new RpcServer("server01", "http://localhost:58355");

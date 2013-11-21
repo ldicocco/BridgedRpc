@@ -14,7 +14,6 @@ namespace BasicWebBridge
 			// Web API routes
 			config.MapHttpAttributeRoutes();
 
-
 			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "rpc/{controller}/{action}/{id}",
