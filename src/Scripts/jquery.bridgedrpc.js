@@ -83,14 +83,14 @@
 		var args = $.makeArray(arguments);
 		return $.ajax({
 			type: 'POST',
-			url: this._config + 'SendRequest',
+			url: this._config.basePath + 'SendRequest',
 			contentType: 'application/json',
 			data: JSON.stringify({ server: this.name, method: args[0], parameters: args.slice(1) })
 		});
 	};
 	ServerProxy.prototype.requestFile = function () {
 		var args = $.makeArray(arguments);
-		$.fileDownload(this._config + 'SendRequest', {
+		$.fileDownload(this._config.basePath + 'SendRequest', {
 			//			preparingMessageHtml: "We are preparing your report, please wait...",
 			//			failMessageHtml: "There was a problem generating your report, please try again.",
 			httpMethod: "POST",

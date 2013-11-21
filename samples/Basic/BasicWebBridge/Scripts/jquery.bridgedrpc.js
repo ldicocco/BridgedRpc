@@ -1,9 +1,52 @@
-(function ($) {
+(function ($, window) {
 	"use strict";
+
+	function parseURL(url) {
+		var a = document.createElement('a');
+		a.href = url;
+		return {
+			source: url,
+			protocol: a.protocol.replace(':', ''),
+			host: a.hostname,
+			port: a.port,
+			query: a.search,
+			params: (function () {
+				var ret = {},
+					seg = a.search.replace(/^\?/, '').split('&'),
+					len = seg.length, i = 0, s;
+				for (; i < len; i++) {
+					if (!seg[i]) { continue; }
+					s = seg[i].split('=');
+					ret[s[0]] = s[1];
+				}
+				return ret;
+			})(),
+			file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+			hash: a.hash.replace('#', ''),
+			path: a.pathname.replace(/^([^\/])/, '/$1'),
+			relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+			segments: a.pathname.replace(/^\//, '').split('/')
+		};
+	}
 
 	var ServerProxy = function (name, connection) {
 		var _self = this;
-		this.name = name;
+		this._config = {
+			name: '',
+			basePath: '/rpc/RpcBridge/',
+			connection: null
+		};
+
+		if ($.type(name === 'string')) {
+			this.name = name;
+		}
+		else if ($.type(name) === 'object') {
+			$.extend(this._config, name);
+			if ($.type(name.connection) === 'object') {
+				connection = name.connection;
+			}
+		}
+
 		this.isConnected = false;
 		if (connection && connection.received) {
 			this.connection = connection;
@@ -40,14 +83,14 @@
 		var args = $.makeArray(arguments);
 		return $.ajax({
 			type: 'POST',
-			url: '/rpc/RpcBridge/SendRequest',
+			url: this._config.basePath + 'SendRequest',
 			contentType: 'application/json',
 			data: JSON.stringify({ server: this.name, method: args[0], parameters: args.slice(1) })
 		});
 	};
 	ServerProxy.prototype.requestFile = function () {
 		var args = $.makeArray(arguments);
-		$.fileDownload('/rpc/Rpcbridge/SendRequest', {
+		$.fileDownload(this._config.basePath + 'SendRequest', {
 			//			preparingMessageHtml: "We are preparing your report, please wait...",
 			//			failMessageHtml: "There was a problem generating your report, please try again.",
 			httpMethod: "POST",
@@ -68,7 +111,7 @@
 	$.rpcServer = function (name, connection) {
 		return new ServerProxy(name, connection);
 	};
-}(window.jQuery));
+}(window.jQuery, window));
 
 
 

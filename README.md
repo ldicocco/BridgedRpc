@@ -11,7 +11,7 @@ SignalR can be used to signal a remote process that some data to process are ava
 Using something like Web API, it is not difficult to implement this, but it requires a lot of boilerplate code.
 This library aim at reducing this boilerplate code.
 
-This is still a very early version, which still has many limitations.
+This is still a very early version, which has many limitations.
 
 How it works.
 --------
