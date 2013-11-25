@@ -57,11 +57,13 @@
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="BridgedRpcConnection.cs" />
     <Compile Include="BridgerService.cs" />
+    <Compile Include="SlicedFile\SlicedFileStream.cs" />
     <Compile Include="PendingRequest.cs" />
     <Compile Include="PendingRequestStatus.cs" />
     <Compile Include="ServerRegistrationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerEntry.cs" />
+    <Compile Include="SlicedFile\SliceData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

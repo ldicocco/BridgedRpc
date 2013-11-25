@@ -7,8 +7,9 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using System.IO;
 
-using BridgedRpc.Bridge;
 using BridgedRpc.Infrastructure;
+using BridgedRpc.Bridge;
+using BridgedRpc.Bridge.SlicedFile;
 using System.Net.Http.Headers;
 
 namespace BridgedRpc.Bridge.WebApi
@@ -42,6 +43,14 @@ namespace BridgedRpc.Bridge.WebApi
 				response.Content.Headers.ContentDisposition.FileName = System.IO.Path.GetFileName(request.Parameters[0] as string);
 				response.Content.Headers.ContentLength = ba.Length;
 			}
+			else if (res.Result is SlicedFileStream)
+			{
+				var stream = res.Result as SlicedFileStream;
+				response.Content = new StreamContent(stream);
+				response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+				response.Content.Headers.ContentDisposition.FileName = System.IO.Path.GetFileName(request.Parameters[0] as string);
+				response.Content.Headers.ContentLength = stream.Length;
+			}
 			else
 			{
 				response.Content = new ObjectContent<ServerResponse>(res, new System.Net.Http.Formatting.JsonMediaTypeFormatter());
@@ -64,20 +73,41 @@ namespace BridgedRpc.Bridge.WebApi
 			return BridgerService.Instance.GetPendingRequestParameters(id);
 		}
 
-		public string SetResult(Guid id, HttpRequestMessage reqMsg)
+		public async Task<string> SetResult(Guid id, HttpRequestMessage reqMsg)
 		{
-			var response = reqMsg.Content.ReadAsAsync<ServerResponse>().Result;
+			var response = await reqMsg.Content.ReadAsAsync<ServerResponse>();
 			BridgerService.Instance.SetPendingRequestResult(id, response);
 			return "OK";
 		}
 
-		public string SetBlobResult(Guid id, HttpRequestMessage reqMsg)
+		public async Task<string> SetBlobResult(Guid id, HttpRequestMessage reqMsg)
 		{
-			var stream = reqMsg.Content.ReadAsStreamAsync().Result;
+			var stream = await reqMsg.Content.ReadAsStreamAsync();
 			var response = new ServerResponse();
 			response.Success = true;
 			response.Result = ToByteArray(stream);
 			BridgerService.Instance.SetPendingRequestResult(id, response);
+			return "OK";
+		}
+
+		public async Task<string> SetSlicedResult(Guid id, int index, int total, HttpRequestMessage reqMsg)
+		{
+			var pr = BridgerService.Instance.GetPendingRequest(id);
+			if (pr.Result == null)
+			{
+				var rootPath = AppDomain.CurrentDomain.BaseDirectory;
+				pr.Result = new SlicedFileStream(total, Path.Combine(rootPath, "Tmp"));
+			}
+			var stream = await reqMsg.Content.ReadAsStreamAsync();
+			SlicedFileStream sfs = (SlicedFileStream)pr.Result;
+			await sfs.SetSliceAsync(index, stream);
+			if (sfs.IsReady())
+			{
+				var response = new ServerResponse();
+				response.Success = true;
+				response.Result = sfs;
+				BridgerService.Instance.SetPendingRequestResult(id, response);
+			}
 			return "OK";
 		}
 

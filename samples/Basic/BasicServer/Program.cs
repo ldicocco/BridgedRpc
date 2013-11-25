@@ -13,7 +13,7 @@ namespace BasicServer
 	{
 		static void Main(string[] args)
 		{
-			var rpcServer = new RpcServer("server01", "http://localhost:58355");
+			var rpcServer = new RpcServer("server01", "http://localhost:58355/");
 			rpcServer.Connection.Received += (data) => Console.WriteLine("ECHO: " + data);
 			rpcServer.OnRpc("add", (long a, long b) => a + b);
 			rpcServer.OnRpc("getFile", (string name) => {

@@ -25,9 +25,7 @@ namespace BridgedRpc.Server
 			_name = name;
 			_baseUri = new Uri(baseUri);
 			_connectionPath = connectionPath;
-			var ub = new UriBuilder(_baseUri);
-			ub.Path += _connectionPath;
-			_connection = new Connection(ub.ToString());
+			_connection = new Connection(_baseUri.Append(_connectionPath).ToString());
 			_connection.Received += OnConnectionReceived;
 			_httpClient = new HttpClient();
 		}
@@ -74,15 +72,11 @@ namespace BridgedRpc.Server
 		private async Task HandleRequest(string method, string path, string id)
 		{
 			Console.WriteLine("HandleGetParameters {0} {1} {2}", method, path, id);
-			var ub = new UriBuilder(_baseUri);
-			ub.Path = path;
-			ub.Path += "/" + id;
-			Console.WriteLine(ub.ToString());
 			if (!_methodsTable.ContainsKey(method))
 			{
 				var sr0 = new ServerResponse(null);
 				var sc0 = new ObjectContent<ServerResponse>(sr0, new System.Net.Http.Formatting.JsonMediaTypeFormatter());
-				var res0 = await _httpClient.PutAsync(ub.ToString(), sc0);
+				var res0 = await _httpClient.PutAsync(_baseUri.Append(path, id).ToString(), sc0);
 			}
 			var parameters = await GetParameters(path, id);
 			var sr = new ServerResponse();
@@ -102,11 +96,14 @@ namespace BridgedRpc.Server
 
 			if (sr.Result is byte[])
 			{
-				await SetBlobResult(path, id, sr.Result as byte[]);
+//				await SetBlobResult(path, id, sr.Result as byte[]);
+				var stream = new MemoryStream(sr.Result as byte[]);
+				await SetSlicedFileStreamResult(path, id, stream);
 			}
 			else if (sr.Result is FileStream)
 			{
-				await SetFileStreamResult(path, id, sr.Result as FileStream);
+				//				await SetFileStreamResult(path, id, sr.Result as FileStream);
+				await SetSlicedFileStreamResult(path, id, sr.Result as FileStream);
 			}
 			else
 			{
@@ -116,11 +113,7 @@ namespace BridgedRpc.Server
 
 		private async Task<IList<object>> GetParameters(string path, string id)
 		{
-			var ub = new UriBuilder(_baseUri);
-			ub.Path = path;
-			ub.Path += "/GetParameters/" + id;
-			Console.WriteLine(ub.ToString());
-			var response = await _httpClient.GetAsync(ub.ToString());
+			var response = await _httpClient.GetAsync(_baseUri.Append(path, "GetParameters", id).ToString());
 			var content = await response.Content.ReadAsStringAsync();
 			var parameters = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<object>>(content);
 			Console.WriteLine("PARAMETERS");
@@ -130,32 +123,40 @@ namespace BridgedRpc.Server
 
 		private async Task SetResult(string path, string id, ServerResponse sr)
 		{
-			var ub = new UriBuilder(_baseUri);
-			ub.Path = path;
-			ub.Path += "/SetResult/" + id;
-			var res = await _httpClient.PostAsJsonAsync(ub.ToString(), sr);
+			var res = await _httpClient.PostAsJsonAsync(_baseUri.Append(path, "SetResult", id).ToString(), sr);
 			Console.WriteLine(res);
 			Console.WriteLine(res.Content.ReadAsStringAsync().Result);
 		}
-
+/*
 		private async Task SetBlobResult(string path, string id, byte[] blob)
 		{
-			var ub = new UriBuilder(_baseUri);
-			ub.Path = path;
-			ub.Path += "/SetBlobResult/" + id;
-			var res = await _httpClient.PostAsJsonAsync(ub.ToString(), blob);
+			var res = await _httpClient.PostAsJsonAsync(_baseUri.Append(path, "SetBlobResult", id).ToString(), blob);
 			Console.WriteLine("SetBlobResult");
 			Console.WriteLine(res);
+		}
+*/
+		private async Task SetSlicedFileStreamResult(string path, string id, Stream stream)
+		{
+			int sliceSize = 500000;
+			int totalSlices = (int)Math.Ceiling(stream.Length / (double)sliceSize);
+			for (int slice = 0; slice < totalSlices; slice++)
+			{
+				byte[] buffer = new byte[sliceSize];
+				int bytesRead = await stream.ReadAsync(buffer, 0, sliceSize);
+				MemoryStream ms = new MemoryStream(buffer, 0, bytesRead);
+				var content = new StreamContent(ms);
+				var queryString = String.Format("?index={0}&total={1}", slice, totalSlices);
+				var url = _baseUri.Append(path, "SetSlicedResult", id, queryString).ToString();
+				Console.WriteLine(url);
+				var res = await _httpClient.PostAsync(url, content);
+				Console.WriteLine(res);
+			}
 		}
 
 		private async Task SetFileStreamResult(string path, string id, FileStream stream)
 		{
-			Console.WriteLine("SetBlobResult - Length = {0}", stream.Length);
-			var ub = new UriBuilder(_baseUri);
-			ub.Path = path;
-			ub.Path += "/SetBlobResult/" + id;
 			var content = new StreamContent(stream);
-			var res = await _httpClient.PostAsync(ub.ToString(), content);
+			var res = await _httpClient.PostAsync(_baseUri.Append(path, "SetBlobResult", id).ToString(), content);
 			Console.WriteLine(res);
 		}
 
