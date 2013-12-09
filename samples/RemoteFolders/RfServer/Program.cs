@@ -14,7 +14,8 @@ namespace RfServer
 	{
 		static void Main(string[] args)
 		{
-			string baseUrl = "http://localhost:49826";
+//			string baseUrl = "http://localhost:49826";
+			string baseUrl = "http://ldicocco.azurewebsites.net/";
 			var rpcServer = new RpcServer("server01", baseUrl);
 			rpcServer.Connection.Received += (data) => Console.WriteLine("ECHO: " + data);
 			rpcServer.OnRpc("getFileSystemEntries", (string root, string path) =>
